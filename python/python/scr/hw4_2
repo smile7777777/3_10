@@ -1,0 +1,7 @@
+T = int(input())
+for i in range(T):
+  str = input()
+  r = int(input())
+  r %= len(str)
+  str = str[r:] + str[:r]
+  print(f"Case #{i+1}: {str}")

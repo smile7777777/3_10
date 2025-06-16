@@ -1,0 +1,6 @@
+T = int(input())
+for i in range(T):
+  s1 = set(input().split())
+  s2 = set(input().split())
+  s3 = s1 & s2
+  print(f'Case #{i+1}: {sorted(map(int,list(s3)))}')

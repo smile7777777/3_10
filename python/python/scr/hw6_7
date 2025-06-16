@@ -1,0 +1,14 @@
+T = int(input())
+for i in range(T):
+  li = list(map(int, input().split()))
+  #print(sorted(li))
+  li = sorted(li)
+  found = False
+  for j in range(len(li)):
+    if j != li[j]:
+      print(f'Case #{i+1}: {j}')
+      found = True
+      break
+  if found == False:
+    print(f'Case #{i+1}: {len(li)}')
+   

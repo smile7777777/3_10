@@ -1,0 +1,15 @@
+T = int(input())
+for i in range(T) :
+  str = input()
+  print(f'Case #{i+1}: ',end="")
+  ans = ""
+  for j in range(len(str)):
+    if str[j] == 'z':
+      ans += 'a'
+    elif str[j] == 'Z':
+      ans += 'A'
+    elif str[j].isalpha():
+      ans += chr(ord(str[j]) + 1)
+    else: 
+      ans += str[j]
+  print(f'{ans}')

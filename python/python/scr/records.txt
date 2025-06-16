@@ -1,0 +1,5 @@
+750
+meal breakfast -50
+drink coffee -100
+food bread -80
+bus 902 -20

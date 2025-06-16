@@ -1,0 +1,516 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.9.0 #11195 (MINGW64)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module testpreempt
+                                      6 	.optsdcc -mmcs51 --model-small
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl __mcs51_genXRAMCLEAR
+                                     12 	.globl __mcs51_genXINIT
+                                     13 	.globl __mcs51_genRAMCLEAR
+                                     14 	.globl _timer0_ISR
+                                     15 	.globl __sdcc_gsinit_startup
+                                     16 	.globl _main
+                                     17 	.globl _Consumer
+                                     18 	.globl _Producer
+                                     19 	.globl _initialize
+                                     20 	.globl _ThreadCreate
+                                     21 	.globl _CY
+                                     22 	.globl _AC
+                                     23 	.globl _F0
+                                     24 	.globl _RS1
+                                     25 	.globl _RS0
+                                     26 	.globl _OV
+                                     27 	.globl _F1
+                                     28 	.globl _P
+                                     29 	.globl _PS
+                                     30 	.globl _PT1
+                                     31 	.globl _PX1
+                                     32 	.globl _PT0
+                                     33 	.globl _PX0
+                                     34 	.globl _RD
+                                     35 	.globl _WR
+                                     36 	.globl _T1
+                                     37 	.globl _T0
+                                     38 	.globl _INT1
+                                     39 	.globl _INT0
+                                     40 	.globl _TXD
+                                     41 	.globl _RXD
+                                     42 	.globl _P3_7
+                                     43 	.globl _P3_6
+                                     44 	.globl _P3_5
+                                     45 	.globl _P3_4
+                                     46 	.globl _P3_3
+                                     47 	.globl _P3_2
+                                     48 	.globl _P3_1
+                                     49 	.globl _P3_0
+                                     50 	.globl _EA
+                                     51 	.globl _ES
+                                     52 	.globl _ET1
+                                     53 	.globl _EX1
+                                     54 	.globl _ET0
+                                     55 	.globl _EX0
+                                     56 	.globl _P2_7
+                                     57 	.globl _P2_6
+                                     58 	.globl _P2_5
+                                     59 	.globl _P2_4
+                                     60 	.globl _P2_3
+                                     61 	.globl _P2_2
+                                     62 	.globl _P2_1
+                                     63 	.globl _P2_0
+                                     64 	.globl _SM0
+                                     65 	.globl _SM1
+                                     66 	.globl _SM2
+                                     67 	.globl _REN
+                                     68 	.globl _TB8
+                                     69 	.globl _RB8
+                                     70 	.globl _TI
+                                     71 	.globl _RI
+                                     72 	.globl _P1_7
+                                     73 	.globl _P1_6
+                                     74 	.globl _P1_5
+                                     75 	.globl _P1_4
+                                     76 	.globl _P1_3
+                                     77 	.globl _P1_2
+                                     78 	.globl _P1_1
+                                     79 	.globl _P1_0
+                                     80 	.globl _TF1
+                                     81 	.globl _TR1
+                                     82 	.globl _TF0
+                                     83 	.globl _TR0
+                                     84 	.globl _IE1
+                                     85 	.globl _IT1
+                                     86 	.globl _IE0
+                                     87 	.globl _IT0
+                                     88 	.globl _P0_7
+                                     89 	.globl _P0_6
+                                     90 	.globl _P0_5
+                                     91 	.globl _P0_4
+                                     92 	.globl _P0_3
+                                     93 	.globl _P0_2
+                                     94 	.globl _P0_1
+                                     95 	.globl _P0_0
+                                     96 	.globl _B
+                                     97 	.globl _ACC
+                                     98 	.globl _PSW
+                                     99 	.globl _IP
+                                    100 	.globl _P3
+                                    101 	.globl _IE
+                                    102 	.globl _P2
+                                    103 	.globl _SBUF
+                                    104 	.globl _SCON
+                                    105 	.globl _P1
+                                    106 	.globl _TH1
+                                    107 	.globl _TH0
+                                    108 	.globl _TL1
+                                    109 	.globl _TL0
+                                    110 	.globl _TMOD
+                                    111 	.globl _TCON
+                                    112 	.globl _PCON
+                                    113 	.globl _DPH
+                                    114 	.globl _DPL
+                                    115 	.globl _SP
+                                    116 	.globl _P0
+                                    117 	.globl _nextChar
+                                    118 	.globl _bufferFull
+                                    119 	.globl _sharedBuffer
+                                    120 ;--------------------------------------------------------
+                                    121 ; special function registers
+                                    122 ;--------------------------------------------------------
+                                    123 	.area RSEG    (ABS,DATA)
+      000000                        124 	.org 0x0000
+                           000080   125 _P0	=	0x0080
+                           000081   126 _SP	=	0x0081
+                           000082   127 _DPL	=	0x0082
+                           000083   128 _DPH	=	0x0083
+                           000087   129 _PCON	=	0x0087
+                           000088   130 _TCON	=	0x0088
+                           000089   131 _TMOD	=	0x0089
+                           00008A   132 _TL0	=	0x008a
+                           00008B   133 _TL1	=	0x008b
+                           00008C   134 _TH0	=	0x008c
+                           00008D   135 _TH1	=	0x008d
+                           000090   136 _P1	=	0x0090
+                           000098   137 _SCON	=	0x0098
+                           000099   138 _SBUF	=	0x0099
+                           0000A0   139 _P2	=	0x00a0
+                           0000A8   140 _IE	=	0x00a8
+                           0000B0   141 _P3	=	0x00b0
+                           0000B8   142 _IP	=	0x00b8
+                           0000D0   143 _PSW	=	0x00d0
+                           0000E0   144 _ACC	=	0x00e0
+                           0000F0   145 _B	=	0x00f0
+                                    146 ;--------------------------------------------------------
+                                    147 ; special function bits
+                                    148 ;--------------------------------------------------------
+                                    149 	.area RSEG    (ABS,DATA)
+      000000                        150 	.org 0x0000
+                           000080   151 _P0_0	=	0x0080
+                           000081   152 _P0_1	=	0x0081
+                           000082   153 _P0_2	=	0x0082
+                           000083   154 _P0_3	=	0x0083
+                           000084   155 _P0_4	=	0x0084
+                           000085   156 _P0_5	=	0x0085
+                           000086   157 _P0_6	=	0x0086
+                           000087   158 _P0_7	=	0x0087
+                           000088   159 _IT0	=	0x0088
+                           000089   160 _IE0	=	0x0089
+                           00008A   161 _IT1	=	0x008a
+                           00008B   162 _IE1	=	0x008b
+                           00008C   163 _TR0	=	0x008c
+                           00008D   164 _TF0	=	0x008d
+                           00008E   165 _TR1	=	0x008e
+                           00008F   166 _TF1	=	0x008f
+                           000090   167 _P1_0	=	0x0090
+                           000091   168 _P1_1	=	0x0091
+                           000092   169 _P1_2	=	0x0092
+                           000093   170 _P1_3	=	0x0093
+                           000094   171 _P1_4	=	0x0094
+                           000095   172 _P1_5	=	0x0095
+                           000096   173 _P1_6	=	0x0096
+                           000097   174 _P1_7	=	0x0097
+                           000098   175 _RI	=	0x0098
+                           000099   176 _TI	=	0x0099
+                           00009A   177 _RB8	=	0x009a
+                           00009B   178 _TB8	=	0x009b
+                           00009C   179 _REN	=	0x009c
+                           00009D   180 _SM2	=	0x009d
+                           00009E   181 _SM1	=	0x009e
+                           00009F   182 _SM0	=	0x009f
+                           0000A0   183 _P2_0	=	0x00a0
+                           0000A1   184 _P2_1	=	0x00a1
+                           0000A2   185 _P2_2	=	0x00a2
+                           0000A3   186 _P2_3	=	0x00a3
+                           0000A4   187 _P2_4	=	0x00a4
+                           0000A5   188 _P2_5	=	0x00a5
+                           0000A6   189 _P2_6	=	0x00a6
+                           0000A7   190 _P2_7	=	0x00a7
+                           0000A8   191 _EX0	=	0x00a8
+                           0000A9   192 _ET0	=	0x00a9
+                           0000AA   193 _EX1	=	0x00aa
+                           0000AB   194 _ET1	=	0x00ab
+                           0000AC   195 _ES	=	0x00ac
+                           0000AF   196 _EA	=	0x00af
+                           0000B0   197 _P3_0	=	0x00b0
+                           0000B1   198 _P3_1	=	0x00b1
+                           0000B2   199 _P3_2	=	0x00b2
+                           0000B3   200 _P3_3	=	0x00b3
+                           0000B4   201 _P3_4	=	0x00b4
+                           0000B5   202 _P3_5	=	0x00b5
+                           0000B6   203 _P3_6	=	0x00b6
+                           0000B7   204 _P3_7	=	0x00b7
+                           0000B0   205 _RXD	=	0x00b0
+                           0000B1   206 _TXD	=	0x00b1
+                           0000B2   207 _INT0	=	0x00b2
+                           0000B3   208 _INT1	=	0x00b3
+                           0000B4   209 _T0	=	0x00b4
+                           0000B5   210 _T1	=	0x00b5
+                           0000B6   211 _WR	=	0x00b6
+                           0000B7   212 _RD	=	0x00b7
+                           0000B8   213 _PX0	=	0x00b8
+                           0000B9   214 _PT0	=	0x00b9
+                           0000BA   215 _PX1	=	0x00ba
+                           0000BB   216 _PT1	=	0x00bb
+                           0000BC   217 _PS	=	0x00bc
+                           0000D0   218 _P	=	0x00d0
+                           0000D1   219 _F1	=	0x00d1
+                           0000D2   220 _OV	=	0x00d2
+                           0000D3   221 _RS0	=	0x00d3
+                           0000D4   222 _RS1	=	0x00d4
+                           0000D5   223 _F0	=	0x00d5
+                           0000D6   224 _AC	=	0x00d6
+                           0000D7   225 _CY	=	0x00d7
+                                    226 ;--------------------------------------------------------
+                                    227 ; overlayable register banks
+                                    228 ;--------------------------------------------------------
+                                    229 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                        230 	.ds 8
+                                    231 ;--------------------------------------------------------
+                                    232 ; internal ram data
+                                    233 ;--------------------------------------------------------
+                                    234 	.area DSEG    (DATA)
+                           000038   235 _sharedBuffer	=	0x0038
+                           000039   236 _bufferFull	=	0x0039
+                           00003A   237 _nextChar	=	0x003a
+                                    238 ;--------------------------------------------------------
+                                    239 ; overlayable items in internal ram 
+                                    240 ;--------------------------------------------------------
+                                    241 ;--------------------------------------------------------
+                                    242 ; Stack segment in internal ram 
+                                    243 ;--------------------------------------------------------
+                                    244 	.area	SSEG
+      00000A                        245 __start__stack:
+      00000A                        246 	.ds	1
+                                    247 
+                                    248 ;--------------------------------------------------------
+                                    249 ; indirectly addressable internal ram data
+                                    250 ;--------------------------------------------------------
+                                    251 	.area ISEG    (DATA)
+                                    252 ;--------------------------------------------------------
+                                    253 ; absolute internal ram data
+                                    254 ;--------------------------------------------------------
+                                    255 	.area IABS    (ABS,DATA)
+                                    256 	.area IABS    (ABS,DATA)
+                                    257 ;--------------------------------------------------------
+                                    258 ; bit data
+                                    259 ;--------------------------------------------------------
+                                    260 	.area BSEG    (BIT)
+                                    261 ;--------------------------------------------------------
+                                    262 ; paged external ram data
+                                    263 ;--------------------------------------------------------
+                                    264 	.area PSEG    (PAG,XDATA)
+                                    265 ;--------------------------------------------------------
+                                    266 ; external ram data
+                                    267 ;--------------------------------------------------------
+                                    268 	.area XSEG    (XDATA)
+                                    269 ;--------------------------------------------------------
+                                    270 ; absolute external ram data
+                                    271 ;--------------------------------------------------------
+                                    272 	.area XABS    (ABS,XDATA)
+                                    273 ;--------------------------------------------------------
+                                    274 ; external initialized ram data
+                                    275 ;--------------------------------------------------------
+                                    276 	.area XISEG   (XDATA)
+                                    277 	.area HOME    (CODE)
+                                    278 	.area GSINIT0 (CODE)
+                                    279 	.area GSINIT1 (CODE)
+                                    280 	.area GSINIT2 (CODE)
+                                    281 	.area GSINIT3 (CODE)
+                                    282 	.area GSINIT4 (CODE)
+                                    283 	.area GSINIT5 (CODE)
+                                    284 	.area GSINIT  (CODE)
+                                    285 	.area GSFINAL (CODE)
+                                    286 	.area CSEG    (CODE)
+                                    287 ;--------------------------------------------------------
+                                    288 ; interrupt vector 
+                                    289 ;--------------------------------------------------------
+                                    290 	.area HOME    (CODE)
+      000000                        291 __interrupt_vect:
+      000000 02 00 89         [24]  292 	ljmp	__sdcc_gsinit_startup
+      000003 32               [24]  293 	reti
+      000004                        294 	.ds	7
+      00000B 02 00 8D         [24]  295 	ljmp	_timer0_ISR
+                                    296 ;--------------------------------------------------------
+                                    297 ; global & static initialisations
+                                    298 ;--------------------------------------------------------
+                                    299 	.area HOME    (CODE)
+                                    300 	.area GSINIT  (CODE)
+                                    301 	.area GSFINAL (CODE)
+                                    302 	.area GSINIT  (CODE)
+                                    303 	.globl __sdcc_gsinit_startup
+                                    304 	.globl __sdcc_program_startup
+                                    305 	.globl __start__stack
+                                    306 	.globl __mcs51_genXINIT
+                                    307 	.globl __mcs51_genXRAMCLEAR
+                                    308 	.globl __mcs51_genRAMCLEAR
+                                    309 	.area GSFINAL (CODE)
+      000011 02 00 0E         [24]  310 	ljmp	__sdcc_program_startup
+                                    311 ;--------------------------------------------------------
+                                    312 ; Home
+                                    313 ;--------------------------------------------------------
+                                    314 	.area HOME    (CODE)
+                                    315 	.area HOME    (CODE)
+      00000E                        316 __sdcc_program_startup:
+      00000E 02 00 7D         [24]  317 	ljmp	_main
+                                    318 ;	return from main will return to caller
+                                    319 ;--------------------------------------------------------
+                                    320 ; code
+                                    321 ;--------------------------------------------------------
+                                    322 	.area CSEG    (CODE)
+                                    323 ;------------------------------------------------------------
+                                    324 ;Allocation info for local variables in function 'initialize'
+                                    325 ;------------------------------------------------------------
+                                    326 ;	testpreempt.c:8: void initialize(){
+                                    327 ;	-----------------------------------------
+                                    328 ;	 function initialize
+                                    329 ;	-----------------------------------------
+      000014                        330 _initialize:
+                           000007   331 	ar7 = 0x07
+                           000006   332 	ar6 = 0x06
+                           000005   333 	ar5 = 0x05
+                           000004   334 	ar4 = 0x04
+                           000003   335 	ar3 = 0x03
+                           000002   336 	ar2 = 0x02
+                           000001   337 	ar1 = 0x01
+                           000000   338 	ar0 = 0x00
+                                    339 ;	testpreempt.c:9: TMOD |= 0x20;
+      000014 43 89 20         [24]  340 	orl	_TMOD,#0x20
+                                    341 ;	testpreempt.c:10: SCON = 0x50;        
+      000017 75 98 50         [24]  342 	mov	_SCON,#0x50
+                                    343 ;	testpreempt.c:11: TH1 = (char) -6;            
+      00001A 75 8D FA         [24]  344 	mov	_TH1,#0xfa
+                                    345 ;	testpreempt.c:12: TR1 = 1;            
+                                    346 ;	assignBit
+      00001D D2 8E            [12]  347 	setb	_TR1
+                                    348 ;	testpreempt.c:13: TI = 1;             
+                                    349 ;	assignBit
+      00001F D2 99            [12]  350 	setb	_TI
+                                    351 ;	testpreempt.c:14: }
+      000021 22               [24]  352 	ret
+                                    353 ;------------------------------------------------------------
+                                    354 ;Allocation info for local variables in function 'Producer'
+                                    355 ;------------------------------------------------------------
+                                    356 ;	testpreempt.c:16: void Producer(void) {
+                                    357 ;	-----------------------------------------
+                                    358 ;	 function Producer
+                                    359 ;	-----------------------------------------
+      000022                        360 _Producer:
+                                    361 ;	testpreempt.c:17: nextChar = 'A'; // 
+      000022 75 3A 41         [24]  362 	mov	_nextChar,#0x41
+                                    363 ;	testpreempt.c:18: while (1) {
+      000025                        364 00104$:
+                                    365 ;	testpreempt.c:25: }
+      000025 7F 01            [12]  366 	mov	r7,#0x01
+      000027 10 AF 02         [24]  367 	jbc	ea,00116$
+      00002A 7F 00            [12]  368 	mov	r7,#0x00
+      00002C                        369 00116$:
+                                    370 ;	testpreempt.c:20: if (!bufferFull) { 
+      00002C E5 39            [12]  371 	mov	a,_bufferFull
+                                    372 ;	testpreempt.c:21: sharedBuffer = nextChar; // write for buffer
+                                    373 ;	testpreempt.c:22: bufferFull = 1; // mark buffer is full
+                                    374 ;	testpreempt.c:23: nextChar = (nextChar - 'A' + 1) % 26 + 'A';
+      00002E 70 28            [24]  375 	jnz	00102$
+      000030 85 3A 38         [24]  376 	mov	_sharedBuffer,_nextChar
+      000033 75 39 01         [24]  377 	mov	_bufferFull,#0x01
+      000036 AD 3A            [24]  378 	mov	r5,_nextChar
+      000038 FE               [12]  379 	mov	r6,a
+      000039 74 C0            [12]  380 	mov	a,#0xc0
+      00003B 2D               [12]  381 	add	a,r5
+      00003C F5 82            [12]  382 	mov	dpl,a
+      00003E 74 FF            [12]  383 	mov	a,#0xff
+      000040 3E               [12]  384 	addc	a,r6
+      000041 F5 83            [12]  385 	mov	dph,a
+      000043 75 08 1A         [24]  386 	mov	__modsint_PARM_2,#0x1a
+                                    387 ;	1-genFromRTrack replaced	mov	(__modsint_PARM_2 + 1),#0x00
+      000046 8E 09            [24]  388 	mov	(__modsint_PARM_2 + 1),r6
+      000048 C0 07            [24]  389 	push	ar7
+      00004A 12 03 CE         [24]  390 	lcall	__modsint
+      00004D AD 82            [24]  391 	mov	r5,dpl
+      00004F AE 83            [24]  392 	mov	r6,dph
+      000051 D0 07            [24]  393 	pop	ar7
+      000053 74 41            [12]  394 	mov	a,#0x41
+      000055 2D               [12]  395 	add	a,r5
+      000056 F5 3A            [12]  396 	mov	_nextChar,a
+      000058                        397 00102$:
+      000058 EF               [12]  398 	mov	a,r7
+      000059 13               [12]  399 	rrc	a
+      00005A 92 AF            [24]  400 	mov	ea,c
+                                    401 ;	testpreempt.c:27: }
+      00005C 80 C7            [24]  402 	sjmp	00104$
+                                    403 ;------------------------------------------------------------
+                                    404 ;Allocation info for local variables in function 'Consumer'
+                                    405 ;------------------------------------------------------------
+                                    406 ;	testpreempt.c:29: void Consumer(void) {
+                                    407 ;	-----------------------------------------
+                                    408 ;	 function Consumer
+                                    409 ;	-----------------------------------------
+      00005E                        410 _Consumer:
+                                    411 ;	testpreempt.c:30: initialize();
+      00005E 12 00 14         [24]  412 	lcall	_initialize
+                                    413 ;	testpreempt.c:31: while (1) {
+      000061                        414 00107$:
+                                    415 ;	testpreempt.c:39: }
+      000061 7F 01            [12]  416 	mov	r7,#0x01
+      000063 10 AF 02         [24]  417 	jbc	ea,00127$
+      000066 7F 00            [12]  418 	mov	r7,#0x00
+      000068                        419 00127$:
+                                    420 ;	testpreempt.c:33: if (bufferFull) {
+      000068 E5 39            [12]  421 	mov	a,_bufferFull
+      00006A 60 0B            [24]  422 	jz	00105$
+                                    423 ;	testpreempt.c:34: SBUF = sharedBuffer; // write the content of buffer
+      00006C 85 38 99         [24]  424 	mov	_SBUF,_sharedBuffer
+                                    425 ;	testpreempt.c:35: while (!TI); // wait trans
+      00006F                        426 00101$:
+                                    427 ;	testpreempt.c:36: TI = 0; // mark done
+                                    428 ;	assignBit
+      00006F 10 99 02         [24]  429 	jbc	_TI,00129$
+      000072 80 FB            [24]  430 	sjmp	00101$
+      000074                        431 00129$:
+                                    432 ;	testpreempt.c:37: bufferFull = 0; // mark buffer is empty
+      000074 75 39 00         [24]  433 	mov	_bufferFull,#0x00
+      000077                        434 00105$:
+      000077 EF               [12]  435 	mov	a,r7
+      000078 13               [12]  436 	rrc	a
+      000079 92 AF            [24]  437 	mov	ea,c
+                                    438 ;	testpreempt.c:41: }
+      00007B 80 E4            [24]  439 	sjmp	00107$
+                                    440 ;------------------------------------------------------------
+                                    441 ;Allocation info for local variables in function 'main'
+                                    442 ;------------------------------------------------------------
+                                    443 ;	testpreempt.c:43: void main(void) {
+                                    444 ;	-----------------------------------------
+                                    445 ;	 function main
+                                    446 ;	-----------------------------------------
+      00007D                        447 _main:
+                                    448 ;	testpreempt.c:44: bufferFull = 0; // initialize
+      00007D 75 39 00         [24]  449 	mov	_bufferFull,#0x00
+                                    450 ;	testpreempt.c:45: ThreadCreate(Producer); // 
+      000080 90 00 22         [24]  451 	mov	dptr,#_Producer
+      000083 12 00 BD         [24]  452 	lcall	_ThreadCreate
+                                    453 ;	testpreempt.c:46: Consumer(); // 
+                                    454 ;	testpreempt.c:47: }
+      000086 02 00 5E         [24]  455 	ljmp	_Consumer
+                                    456 ;------------------------------------------------------------
+                                    457 ;Allocation info for local variables in function '_sdcc_gsinit_startup'
+                                    458 ;------------------------------------------------------------
+                                    459 ;	testpreempt.c:49: void _sdcc_gsinit_startup(void) {
+                                    460 ;	-----------------------------------------
+                                    461 ;	 function _sdcc_gsinit_startup
+                                    462 ;	-----------------------------------------
+      000089                        463 __sdcc_gsinit_startup:
+                                    464 ;	testpreempt.c:52: __endasm;
+      000089 02 00 94         [24]  465 	LJMP	_Bootstrap
+                                    466 ;	testpreempt.c:53: }
+      00008C 22               [24]  467 	ret
+                                    468 ;------------------------------------------------------------
+                                    469 ;Allocation info for local variables in function 'timer0_ISR'
+                                    470 ;------------------------------------------------------------
+                                    471 ;	testpreempt.c:54: void timer0_ISR(void) __interrupt(1) {
+                                    472 ;	-----------------------------------------
+                                    473 ;	 function timer0_ISR
+                                    474 ;	-----------------------------------------
+      00008D                        475 _timer0_ISR:
+                                    476 ;	testpreempt.c:57: __endasm;
+      00008D 02 01 F8         [24]  477 	LJMP	_myTimer0Handler
+                                    478 ;	testpreempt.c:58: }
+      000090 32               [24]  479 	reti
+                                    480 ;	eliminated unneeded mov psw,# (no regs used in bank)
+                                    481 ;	eliminated unneeded push/pop psw
+                                    482 ;	eliminated unneeded push/pop dpl
+                                    483 ;	eliminated unneeded push/pop dph
+                                    484 ;	eliminated unneeded push/pop b
+                                    485 ;	eliminated unneeded push/pop acc
+                                    486 ;------------------------------------------------------------
+                                    487 ;Allocation info for local variables in function '_mcs51_genRAMCLEAR'
+                                    488 ;------------------------------------------------------------
+                                    489 ;	testpreempt.c:60: void _mcs51_genRAMCLEAR(void) {}
+                                    490 ;	-----------------------------------------
+                                    491 ;	 function _mcs51_genRAMCLEAR
+                                    492 ;	-----------------------------------------
+      000091                        493 __mcs51_genRAMCLEAR:
+      000091 22               [24]  494 	ret
+                                    495 ;------------------------------------------------------------
+                                    496 ;Allocation info for local variables in function '_mcs51_genXINIT'
+                                    497 ;------------------------------------------------------------
+                                    498 ;	testpreempt.c:61: void _mcs51_genXINIT(void) {}
+                                    499 ;	-----------------------------------------
+                                    500 ;	 function _mcs51_genXINIT
+                                    501 ;	-----------------------------------------
+      000092                        502 __mcs51_genXINIT:
+      000092 22               [24]  503 	ret
+                                    504 ;------------------------------------------------------------
+                                    505 ;Allocation info for local variables in function '_mcs51_genXRAMCLEAR'
+                                    506 ;------------------------------------------------------------
+                                    507 ;	testpreempt.c:62: void _mcs51_genXRAMCLEAR(void) {}
+                                    508 ;	-----------------------------------------
+                                    509 ;	 function _mcs51_genXRAMCLEAR
+                                    510 ;	-----------------------------------------
+      000093                        511 __mcs51_genXRAMCLEAR:
+      000093 22               [24]  512 	ret
+                                    513 	.area CSEG    (CODE)
+                                    514 	.area CONST   (CODE)
+                                    515 	.area XINIT   (CODE)
+                                    516 	.area CABS    (ABS,CODE)

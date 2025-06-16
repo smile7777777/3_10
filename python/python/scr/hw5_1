@@ -1,0 +1,13 @@
+T = int(input())
+for i in range(T):
+  str = input()
+  li = str.split()
+  lir = list(reversed(li))
+  flag = True
+  for j in range(len(li)):
+   if li[j] != lir[j]:
+     print(f'Case #{i+1}: No')
+     flag = False
+     break
+  if flag == True: 
+    print(f'Case #{i+1}: Yes')

@@ -1,0 +1,15 @@
+T = int(input())
+for i in range(T):
+  li = input().split()
+  li.reverse()
+  lir = []
+  carry = 1  
+  for j in range(len(li)): 
+    li[j] = ord(li[j]) - 48
+    li[j] += carry
+    lir.append((li[j]) % 10)
+    carry = li[j] // 10;
+  if carry == 1:
+    lir.append(1)
+  lir.reverse()
+  print(f'Case #{i+1}: {lir}')

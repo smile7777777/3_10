@@ -1,0 +1,26 @@
+T = int(input())
+for i in range(T):
+  tar = int(input())
+  ans = []
+  li = list(map(int, input().split()))
+  store = []
+  li2 = li[:]
+  li.sort() 
+  for j in range(len(li)) :
+    n = tar - li[j]
+    l = j+1
+    r = len(li)-1
+    while l <= r:
+      mid = (l+r) // 2
+      if li[mid] == n:
+        ans = []
+        ans.append(li2.index(li[j]))
+        ans.append(li2.index(li[mid]))
+        ans.sort()
+        print(f'Case #{i+1}: {(ans)}')
+        break
+      elif li[mid] > n:
+        r = mid - 1
+      else :
+        l = mid + 1
+  

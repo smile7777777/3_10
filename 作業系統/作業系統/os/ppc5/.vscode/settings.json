@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "cooperative.h": "c",
+    "lcdlib.h": "c"
+  }
+}

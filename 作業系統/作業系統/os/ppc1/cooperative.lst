@@ -1,0 +1,666 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.9.0 #11195 (MINGW64)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module cooperative
+                                      6 	.optsdcc -mmcs51 --model-small
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _Bootstrap
+                                     12 	.globl _main
+                                     13 	.globl _CY
+                                     14 	.globl _AC
+                                     15 	.globl _F0
+                                     16 	.globl _RS1
+                                     17 	.globl _RS0
+                                     18 	.globl _OV
+                                     19 	.globl _F1
+                                     20 	.globl _P
+                                     21 	.globl _PS
+                                     22 	.globl _PT1
+                                     23 	.globl _PX1
+                                     24 	.globl _PT0
+                                     25 	.globl _PX0
+                                     26 	.globl _RD
+                                     27 	.globl _WR
+                                     28 	.globl _T1
+                                     29 	.globl _T0
+                                     30 	.globl _INT1
+                                     31 	.globl _INT0
+                                     32 	.globl _TXD
+                                     33 	.globl _RXD
+                                     34 	.globl _P3_7
+                                     35 	.globl _P3_6
+                                     36 	.globl _P3_5
+                                     37 	.globl _P3_4
+                                     38 	.globl _P3_3
+                                     39 	.globl _P3_2
+                                     40 	.globl _P3_1
+                                     41 	.globl _P3_0
+                                     42 	.globl _EA
+                                     43 	.globl _ES
+                                     44 	.globl _ET1
+                                     45 	.globl _EX1
+                                     46 	.globl _ET0
+                                     47 	.globl _EX0
+                                     48 	.globl _P2_7
+                                     49 	.globl _P2_6
+                                     50 	.globl _P2_5
+                                     51 	.globl _P2_4
+                                     52 	.globl _P2_3
+                                     53 	.globl _P2_2
+                                     54 	.globl _P2_1
+                                     55 	.globl _P2_0
+                                     56 	.globl _SM0
+                                     57 	.globl _SM1
+                                     58 	.globl _SM2
+                                     59 	.globl _REN
+                                     60 	.globl _TB8
+                                     61 	.globl _RB8
+                                     62 	.globl _TI
+                                     63 	.globl _RI
+                                     64 	.globl _P1_7
+                                     65 	.globl _P1_6
+                                     66 	.globl _P1_5
+                                     67 	.globl _P1_4
+                                     68 	.globl _P1_3
+                                     69 	.globl _P1_2
+                                     70 	.globl _P1_1
+                                     71 	.globl _P1_0
+                                     72 	.globl _TF1
+                                     73 	.globl _TR1
+                                     74 	.globl _TF0
+                                     75 	.globl _TR0
+                                     76 	.globl _IE1
+                                     77 	.globl _IT1
+                                     78 	.globl _IE0
+                                     79 	.globl _IT0
+                                     80 	.globl _P0_7
+                                     81 	.globl _P0_6
+                                     82 	.globl _P0_5
+                                     83 	.globl _P0_4
+                                     84 	.globl _P0_3
+                                     85 	.globl _P0_2
+                                     86 	.globl _P0_1
+                                     87 	.globl _P0_0
+                                     88 	.globl _B
+                                     89 	.globl _ACC
+                                     90 	.globl _PSW
+                                     91 	.globl _IP
+                                     92 	.globl _P3
+                                     93 	.globl _IE
+                                     94 	.globl _P2
+                                     95 	.globl _SBUF
+                                     96 	.globl _SCON
+                                     97 	.globl _P1
+                                     98 	.globl _TH1
+                                     99 	.globl _TH0
+                                    100 	.globl _TL1
+                                    101 	.globl _TL0
+                                    102 	.globl _TMOD
+                                    103 	.globl _TCON
+                                    104 	.globl _PCON
+                                    105 	.globl _DPH
+                                    106 	.globl _DPL
+                                    107 	.globl _SP
+                                    108 	.globl _P0
+                                    109 	.globl _new_ID
+                                    110 	.globl _temp_SP
+                                    111 	.globl _bitmap_ID
+                                    112 	.globl _cur_ID
+                                    113 	.globl _saved_SP
+                                    114 	.globl _ThreadCreate
+                                    115 	.globl _ThreadYield
+                                    116 	.globl _ThreadExit
+                                    117 ;--------------------------------------------------------
+                                    118 ; special function registers
+                                    119 ;--------------------------------------------------------
+                                    120 	.area RSEG    (ABS,DATA)
+      000000                        121 	.org 0x0000
+                           000080   122 _P0	=	0x0080
+                           000081   123 _SP	=	0x0081
+                           000082   124 _DPL	=	0x0082
+                           000083   125 _DPH	=	0x0083
+                           000087   126 _PCON	=	0x0087
+                           000088   127 _TCON	=	0x0088
+                           000089   128 _TMOD	=	0x0089
+                           00008A   129 _TL0	=	0x008a
+                           00008B   130 _TL1	=	0x008b
+                           00008C   131 _TH0	=	0x008c
+                           00008D   132 _TH1	=	0x008d
+                           000090   133 _P1	=	0x0090
+                           000098   134 _SCON	=	0x0098
+                           000099   135 _SBUF	=	0x0099
+                           0000A0   136 _P2	=	0x00a0
+                           0000A8   137 _IE	=	0x00a8
+                           0000B0   138 _P3	=	0x00b0
+                           0000B8   139 _IP	=	0x00b8
+                           0000D0   140 _PSW	=	0x00d0
+                           0000E0   141 _ACC	=	0x00e0
+                           0000F0   142 _B	=	0x00f0
+                                    143 ;--------------------------------------------------------
+                                    144 ; special function bits
+                                    145 ;--------------------------------------------------------
+                                    146 	.area RSEG    (ABS,DATA)
+      000000                        147 	.org 0x0000
+                           000080   148 _P0_0	=	0x0080
+                           000081   149 _P0_1	=	0x0081
+                           000082   150 _P0_2	=	0x0082
+                           000083   151 _P0_3	=	0x0083
+                           000084   152 _P0_4	=	0x0084
+                           000085   153 _P0_5	=	0x0085
+                           000086   154 _P0_6	=	0x0086
+                           000087   155 _P0_7	=	0x0087
+                           000088   156 _IT0	=	0x0088
+                           000089   157 _IE0	=	0x0089
+                           00008A   158 _IT1	=	0x008a
+                           00008B   159 _IE1	=	0x008b
+                           00008C   160 _TR0	=	0x008c
+                           00008D   161 _TF0	=	0x008d
+                           00008E   162 _TR1	=	0x008e
+                           00008F   163 _TF1	=	0x008f
+                           000090   164 _P1_0	=	0x0090
+                           000091   165 _P1_1	=	0x0091
+                           000092   166 _P1_2	=	0x0092
+                           000093   167 _P1_3	=	0x0093
+                           000094   168 _P1_4	=	0x0094
+                           000095   169 _P1_5	=	0x0095
+                           000096   170 _P1_6	=	0x0096
+                           000097   171 _P1_7	=	0x0097
+                           000098   172 _RI	=	0x0098
+                           000099   173 _TI	=	0x0099
+                           00009A   174 _RB8	=	0x009a
+                           00009B   175 _TB8	=	0x009b
+                           00009C   176 _REN	=	0x009c
+                           00009D   177 _SM2	=	0x009d
+                           00009E   178 _SM1	=	0x009e
+                           00009F   179 _SM0	=	0x009f
+                           0000A0   180 _P2_0	=	0x00a0
+                           0000A1   181 _P2_1	=	0x00a1
+                           0000A2   182 _P2_2	=	0x00a2
+                           0000A3   183 _P2_3	=	0x00a3
+                           0000A4   184 _P2_4	=	0x00a4
+                           0000A5   185 _P2_5	=	0x00a5
+                           0000A6   186 _P2_6	=	0x00a6
+                           0000A7   187 _P2_7	=	0x00a7
+                           0000A8   188 _EX0	=	0x00a8
+                           0000A9   189 _ET0	=	0x00a9
+                           0000AA   190 _EX1	=	0x00aa
+                           0000AB   191 _ET1	=	0x00ab
+                           0000AC   192 _ES	=	0x00ac
+                           0000AF   193 _EA	=	0x00af
+                           0000B0   194 _P3_0	=	0x00b0
+                           0000B1   195 _P3_1	=	0x00b1
+                           0000B2   196 _P3_2	=	0x00b2
+                           0000B3   197 _P3_3	=	0x00b3
+                           0000B4   198 _P3_4	=	0x00b4
+                           0000B5   199 _P3_5	=	0x00b5
+                           0000B6   200 _P3_6	=	0x00b6
+                           0000B7   201 _P3_7	=	0x00b7
+                           0000B0   202 _RXD	=	0x00b0
+                           0000B1   203 _TXD	=	0x00b1
+                           0000B2   204 _INT0	=	0x00b2
+                           0000B3   205 _INT1	=	0x00b3
+                           0000B4   206 _T0	=	0x00b4
+                           0000B5   207 _T1	=	0x00b5
+                           0000B6   208 _WR	=	0x00b6
+                           0000B7   209 _RD	=	0x00b7
+                           0000B8   210 _PX0	=	0x00b8
+                           0000B9   211 _PT0	=	0x00b9
+                           0000BA   212 _PX1	=	0x00ba
+                           0000BB   213 _PT1	=	0x00bb
+                           0000BC   214 _PS	=	0x00bc
+                           0000D0   215 _P	=	0x00d0
+                           0000D1   216 _F1	=	0x00d1
+                           0000D2   217 _OV	=	0x00d2
+                           0000D3   218 _RS0	=	0x00d3
+                           0000D4   219 _RS1	=	0x00d4
+                           0000D5   220 _F0	=	0x00d5
+                           0000D6   221 _AC	=	0x00d6
+                           0000D7   222 _CY	=	0x00d7
+                                    223 ;--------------------------------------------------------
+                                    224 ; overlayable register banks
+                                    225 ;--------------------------------------------------------
+                                    226 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                        227 	.ds 8
+                                    228 ;--------------------------------------------------------
+                                    229 ; internal ram data
+                                    230 ;--------------------------------------------------------
+                                    231 	.area DSEG    (DATA)
+                           000030   232 _saved_SP	=	0x0030
+                           000034   233 _cur_ID	=	0x0034
+                           000035   234 _bitmap_ID	=	0x0035
+                           000036   235 _temp_SP	=	0x0036
+                           000037   236 _new_ID	=	0x0037
+                                    237 ;--------------------------------------------------------
+                                    238 ; overlayable items in internal ram 
+                                    239 ;--------------------------------------------------------
+                                    240 	.area	OSEG    (OVR,DATA)
+                                    241 ;--------------------------------------------------------
+                                    242 ; indirectly addressable internal ram data
+                                    243 ;--------------------------------------------------------
+                                    244 	.area ISEG    (DATA)
+                                    245 ;--------------------------------------------------------
+                                    246 ; absolute internal ram data
+                                    247 ;--------------------------------------------------------
+                                    248 	.area IABS    (ABS,DATA)
+                                    249 	.area IABS    (ABS,DATA)
+                                    250 ;--------------------------------------------------------
+                                    251 ; bit data
+                                    252 ;--------------------------------------------------------
+                                    253 	.area BSEG    (BIT)
+                                    254 ;--------------------------------------------------------
+                                    255 ; paged external ram data
+                                    256 ;--------------------------------------------------------
+                                    257 	.area PSEG    (PAG,XDATA)
+                                    258 ;--------------------------------------------------------
+                                    259 ; external ram data
+                                    260 ;--------------------------------------------------------
+                                    261 	.area XSEG    (XDATA)
+                                    262 ;--------------------------------------------------------
+                                    263 ; absolute external ram data
+                                    264 ;--------------------------------------------------------
+                                    265 	.area XABS    (ABS,XDATA)
+                                    266 ;--------------------------------------------------------
+                                    267 ; external initialized ram data
+                                    268 ;--------------------------------------------------------
+                                    269 	.area XISEG   (XDATA)
+                                    270 	.area HOME    (CODE)
+                                    271 	.area GSINIT0 (CODE)
+                                    272 	.area GSINIT1 (CODE)
+                                    273 	.area GSINIT2 (CODE)
+                                    274 	.area GSINIT3 (CODE)
+                                    275 	.area GSINIT4 (CODE)
+                                    276 	.area GSINIT5 (CODE)
+                                    277 	.area GSINIT  (CODE)
+                                    278 	.area GSFINAL (CODE)
+                                    279 	.area CSEG    (CODE)
+                                    280 ;--------------------------------------------------------
+                                    281 ; global & static initialisations
+                                    282 ;--------------------------------------------------------
+                                    283 	.area HOME    (CODE)
+                                    284 	.area GSINIT  (CODE)
+                                    285 	.area GSFINAL (CODE)
+                                    286 	.area GSINIT  (CODE)
+                                    287 ;--------------------------------------------------------
+                                    288 ; Home
+                                    289 ;--------------------------------------------------------
+                                    290 	.area HOME    (CODE)
+                                    291 	.area HOME    (CODE)
+                                    292 ;--------------------------------------------------------
+                                    293 ; code
+                                    294 ;--------------------------------------------------------
+                                    295 	.area CSEG    (CODE)
+                                    296 ;------------------------------------------------------------
+                                    297 ;Allocation info for local variables in function 'Bootstrap'
+                                    298 ;------------------------------------------------------------
+                                    299 ;	cooperative.c:79: void Bootstrap(void)
+                                    300 ;	-----------------------------------------
+                                    301 ;	 function Bootstrap
+                                    302 ;	-----------------------------------------
+      000000                        303 _Bootstrap:
+                           000007   304 	ar7 = 0x07
+                           000006   305 	ar6 = 0x06
+                           000005   306 	ar5 = 0x05
+                           000004   307 	ar4 = 0x04
+                           000003   308 	ar3 = 0x03
+                           000002   309 	ar2 = 0x02
+                           000001   310 	ar1 = 0x01
+                           000000   311 	ar0 = 0x00
+                                    312 ;	cooperative.c:93: bitmap_ID = 0b0000;
+      000000 75 35 00         [24]  313 	mov	_bitmap_ID,#0x00
+                                    314 ;	cooperative.c:94: cur_ID = 0;
+      000003 75 34 00         [24]  315 	mov	_cur_ID,#0x00
+                                    316 ;	cooperative.c:96: cur_ID = ThreadCreate(main);
+      000006 90r00r00         [24]  317 	mov	dptr,#_main
+      000009 12r00r21         [24]  318 	lcall	_ThreadCreate
+      00000C 85 82 34         [24]  319 	mov	_cur_ID,dpl
+                                    320 ;	cooperative.c:98: RESTORESTATE;               \
+      00000F E5 34            [12]  321 	mov	a,_cur_ID
+      000011 24 30            [12]  322 	add	a,#_saved_SP
+      000013 F9               [12]  323 	mov	r1,a
+      000014 87 81            [24]  324 	mov	_SP,@r1
+      000016 D0 D0            [24]  325 	POP PSW 
+      000018 D0 83            [24]  326 	POP DPH 
+      00001A D0 82            [24]  327 	POP DPL 
+      00001C D0 F0            [24]  328 	POP B 
+      00001E D0 E0            [24]  329 	POP ACC 
+      000020 22               [24]  330 	ret
+                                    331 ;------------------------------------------------------------
+                                    332 ;Allocation info for local variables in function 'ThreadCreate'
+                                    333 ;------------------------------------------------------------
+                                    334 ;fp                        Allocated to registers 
+                                    335 ;------------------------------------------------------------
+                                    336 ;	cooperative.c:107: ThreadID ThreadCreate(FunctionPtr fp) {
+                                    337 ;	-----------------------------------------
+                                    338 ;	 function ThreadCreate
+                                    339 ;	-----------------------------------------
+      000021                        340 _ThreadCreate:
+                                    341 ;	cooperative.c:108: if (bitmap_ID == 0b1111) return -1; //check 
+      000021 74 0F            [12]  342 	mov	a,#0x0f
+      000023 B5 35 04         [24]  343 	cjne	a,_bitmap_ID,00102$
+      000026 75 82 FF         [24]  344 	mov	dpl,#0xff
+      000029 22               [24]  345 	ret
+      00002A                        346 00102$:
+                                    347 ;	cooperative.c:110: temp_SP = SP; //save current SP
+      00002A 85 81 36         [24]  348 	mov	_temp_SP,_SP
+                                    349 ;	cooperative.c:112: if (!(bitmap_ID & 0b0001)) {
+      00002D E5 35            [12]  350 	mov	a,_bitmap_ID
+      00002F 20 E0 08         [24]  351 	jb	acc.0,00112$
+                                    352 ;	cooperative.c:113: bitmap_ID |= 0b0001;
+      000032 43 35 01         [24]  353 	orl	_bitmap_ID,#0x01
+                                    354 ;	cooperative.c:114: new_ID = 0;
+      000035 75 37 00         [24]  355 	mov	_new_ID,#0x00
+      000038 80 25            [24]  356 	sjmp	00113$
+      00003A                        357 00112$:
+                                    358 ;	cooperative.c:115: } else if (!(bitmap_ID & 0b0010)) {
+      00003A E5 35            [12]  359 	mov	a,_bitmap_ID
+      00003C 20 E1 08         [24]  360 	jb	acc.1,00109$
+                                    361 ;	cooperative.c:116: bitmap_ID |= 0b0010;
+      00003F 43 35 02         [24]  362 	orl	_bitmap_ID,#0x02
+                                    363 ;	cooperative.c:117: new_ID = 1;
+      000042 75 37 01         [24]  364 	mov	_new_ID,#0x01
+      000045 80 18            [24]  365 	sjmp	00113$
+      000047                        366 00109$:
+                                    367 ;	cooperative.c:118: } else if (!(bitmap_ID & 0b0100)) {
+      000047 E5 35            [12]  368 	mov	a,_bitmap_ID
+      000049 20 E2 08         [24]  369 	jb	acc.2,00106$
+                                    370 ;	cooperative.c:119: bitmap_ID |= 0b0100;
+      00004C 43 35 04         [24]  371 	orl	_bitmap_ID,#0x04
+                                    372 ;	cooperative.c:120: new_ID = 2;
+      00004F 75 37 02         [24]  373 	mov	_new_ID,#0x02
+      000052 80 0B            [24]  374 	sjmp	00113$
+      000054                        375 00106$:
+                                    376 ;	cooperative.c:121: } else if (!(bitmap_ID & 0b1000)) {
+      000054 E5 35            [12]  377 	mov	a,_bitmap_ID
+      000056 20 E3 06         [24]  378 	jb	acc.3,00113$
+                                    379 ;	cooperative.c:122: bitmap_ID |= 0b1000;
+      000059 43 35 08         [24]  380 	orl	_bitmap_ID,#0x08
+                                    381 ;	cooperative.c:123: new_ID = 3;
+      00005C 75 37 03         [24]  382 	mov	_new_ID,#0x03
+      00005F                        383 00113$:
+                                    384 ;	cooperative.c:126: SP = 0x3F + (new_ID * 0x10); 
+      00005F E5 37            [12]  385 	mov	a,_new_ID
+      000061 C4               [12]  386 	swap	a
+      000062 54 F0            [12]  387 	anl	a,#0xf0
+      000064 FF               [12]  388 	mov	r7,a
+      000065 24 3F            [12]  389 	add	a,#0x3f
+      000067 F5 81            [12]  390 	mov	_SP,a
+                                    391 ;	cooperative.c:131: __endasm;
+      000069 C0 82            [24]  392 	PUSH	DPL
+      00006B C0 83            [24]  393 	PUSH	DPH
+                                    394 ;	cooperative.c:139: __endasm;
+      00006D 74 00            [12]  395 	MOV	A, #0
+      00006F C0 E0            [24]  396 	PUSH	A
+      000071 C0 E0            [24]  397 	PUSH	A
+      000073 C0 E0            [24]  398 	PUSH	A
+      000075 C0 E0            [24]  399 	PUSH	A
+                                    400 ;	cooperative.c:141: PSW = (new_ID << 3); 
+      000077 E5 37            [12]  401 	mov	a,_new_ID
+      000079 FF               [12]  402 	mov	r7,a
+      00007A C4               [12]  403 	swap	a
+      00007B 03               [12]  404 	rr	a
+      00007C 54 F8            [12]  405 	anl	a,#0xf8
+      00007E F5 D0            [12]  406 	mov	_PSW,a
+                                    407 ;	cooperative.c:145: __endasm;
+      000080 C0 D0            [24]  408 	PUSH	PSW
+                                    409 ;	cooperative.c:147: saved_SP[new_ID] = SP;           
+      000082 E5 37            [12]  410 	mov	a,_new_ID
+      000084 24 30            [12]  411 	add	a,#_saved_SP
+      000086 F8               [12]  412 	mov	r0,a
+      000087 A6 81            [24]  413 	mov	@r0,_SP
+                                    414 ;	cooperative.c:148: SP = temp_SP;                    
+      000089 85 36 81         [24]  415 	mov	_SP,_temp_SP
+                                    416 ;	cooperative.c:150: return new_ID;                   //
+      00008C 85 37 82         [24]  417 	mov	dpl,_new_ID
+                                    418 ;	cooperative.c:151: }
+      00008F 22               [24]  419 	ret
+                                    420 ;------------------------------------------------------------
+                                    421 ;Allocation info for local variables in function 'ThreadYield'
+                                    422 ;------------------------------------------------------------
+                                    423 ;	cooperative.c:162: void ThreadYield(void) {
+                                    424 ;	-----------------------------------------
+                                    425 ;	 function ThreadYield
+                                    426 ;	-----------------------------------------
+      000090                        427 _ThreadYield:
+                                    428 ;	cooperative.c:163: SAVESTATE; 
+      000090 C0 E0            [24]  429 	PUSH ACC 
+      000092 C0 F0            [24]  430 	PUSH B 
+      000094 C0 82            [24]  431 	PUSH DPL 
+      000096 C0 83            [24]  432 	PUSH DPH 
+      000098 C0 D0            [24]  433 	PUSH PSW 
+      00009A E5 34            [12]  434 	mov	a,_cur_ID
+      00009C 24 30            [12]  435 	add	a,#_saved_SP
+      00009E F8               [12]  436 	mov	r0,a
+      00009F A6 81            [24]  437 	mov	@r0,_SP
+                                    438 ;	cooperative.c:164: if (!bitmap_ID) return;
+      0000A1 E5 35            [12]  439 	mov	a,_bitmap_ID
+      0000A3 70 01            [24]  440 	jnz	00102$
+      0000A5 22               [24]  441 	ret
+      0000A6                        442 00102$:
+                                    443 ;	cooperative.c:165: if (cur_ID == 0) {
+      0000A6 E5 34            [12]  444 	mov	a,_cur_ID
+      0000A8 70 24            [24]  445 	jnz	00144$
+                                    446 ;	cooperative.c:166: if (bitmap_ID & 0b0010) cur_ID = 1;
+      0000AA E5 35            [12]  447 	mov	a,_bitmap_ID
+      0000AC 30 E1 06         [24]  448 	jnb	acc.1,00109$
+      0000AF 75 34 01         [24]  449 	mov	_cur_ID,#0x01
+      0000B2 02r01r35         [24]  450 	ljmp	00145$
+      0000B5                        451 00109$:
+                                    452 ;	cooperative.c:167: else if (bitmap_ID & 0b0100) cur_ID = 2;
+      0000B5 E5 35            [12]  453 	mov	a,_bitmap_ID
+      0000B7 30 E2 06         [24]  454 	jnb	acc.2,00106$
+      0000BA 75 34 02         [24]  455 	mov	_cur_ID,#0x02
+      0000BD 02r01r35         [24]  456 	ljmp	00145$
+      0000C0                        457 00106$:
+                                    458 ;	cooperative.c:168: else if (bitmap_ID & 0b1000) cur_ID = 3;
+      0000C0 E5 35            [12]  459 	mov	a,_bitmap_ID
+      0000C2 20 E3 03         [24]  460 	jb	acc.3,00220$
+      0000C5 02r01r35         [24]  461 	ljmp	00145$
+      0000C8                        462 00220$:
+      0000C8 75 34 03         [24]  463 	mov	_cur_ID,#0x03
+      0000CB 02r01r35         [24]  464 	ljmp	00145$
+      0000CE                        465 00144$:
+                                    466 ;	cooperative.c:169: } else if (cur_ID == 1) {
+      0000CE 74 01            [12]  467 	mov	a,#0x01
+      0000D0 B5 34 1E         [24]  468 	cjne	a,_cur_ID,00141$
+                                    469 ;	cooperative.c:170: if (bitmap_ID & 0b0100) cur_ID = 2;
+      0000D3 E5 35            [12]  470 	mov	a,_bitmap_ID
+      0000D5 30 E2 05         [24]  471 	jnb	acc.2,00117$
+      0000D8 75 34 02         [24]  472 	mov	_cur_ID,#0x02
+      0000DB 80 58            [24]  473 	sjmp	00145$
+      0000DD                        474 00117$:
+                                    475 ;	cooperative.c:171: else if (bitmap_ID & 0b1000) cur_ID = 3;
+      0000DD E5 35            [12]  476 	mov	a,_bitmap_ID
+      0000DF 30 E3 05         [24]  477 	jnb	acc.3,00114$
+      0000E2 75 34 03         [24]  478 	mov	_cur_ID,#0x03
+      0000E5 80 4E            [24]  479 	sjmp	00145$
+      0000E7                        480 00114$:
+                                    481 ;	cooperative.c:172: else if (bitmap_ID & 0b0001) cur_ID = 0;
+      0000E7 E5 35            [12]  482 	mov	a,_bitmap_ID
+      0000E9 30 E0 49         [24]  483 	jnb	acc.0,00145$
+      0000EC 75 34 00         [24]  484 	mov	_cur_ID,#0x00
+      0000EF 80 44            [24]  485 	sjmp	00145$
+      0000F1                        486 00141$:
+                                    487 ;	cooperative.c:173: } else if (cur_ID == 2) {
+      0000F1 74 02            [12]  488 	mov	a,#0x02
+      0000F3 B5 34 1E         [24]  489 	cjne	a,_cur_ID,00138$
+                                    490 ;	cooperative.c:174: if (bitmap_ID & 0b1000) cur_ID = 3;
+      0000F6 E5 35            [12]  491 	mov	a,_bitmap_ID
+      0000F8 30 E3 05         [24]  492 	jnb	acc.3,00125$
+      0000FB 75 34 03         [24]  493 	mov	_cur_ID,#0x03
+      0000FE 80 35            [24]  494 	sjmp	00145$
+      000100                        495 00125$:
+                                    496 ;	cooperative.c:175: else if (bitmap_ID & 0b0001) cur_ID = 0;
+      000100 E5 35            [12]  497 	mov	a,_bitmap_ID
+      000102 30 E0 05         [24]  498 	jnb	acc.0,00122$
+      000105 75 34 00         [24]  499 	mov	_cur_ID,#0x00
+      000108 80 2B            [24]  500 	sjmp	00145$
+      00010A                        501 00122$:
+                                    502 ;	cooperative.c:176: else if (bitmap_ID & 0b0010) cur_ID = 1;
+      00010A E5 35            [12]  503 	mov	a,_bitmap_ID
+      00010C 30 E1 26         [24]  504 	jnb	acc.1,00145$
+      00010F 75 34 01         [24]  505 	mov	_cur_ID,#0x01
+      000112 80 21            [24]  506 	sjmp	00145$
+      000114                        507 00138$:
+                                    508 ;	cooperative.c:177: } else if (cur_ID == 3) {
+      000114 74 03            [12]  509 	mov	a,#0x03
+      000116 B5 34 1C         [24]  510 	cjne	a,_cur_ID,00145$
+                                    511 ;	cooperative.c:178: if (bitmap_ID & 0b0001) cur_ID = 0;
+      000119 E5 35            [12]  512 	mov	a,_bitmap_ID
+      00011B 30 E0 05         [24]  513 	jnb	acc.0,00133$
+      00011E 75 34 00         [24]  514 	mov	_cur_ID,#0x00
+      000121 80 12            [24]  515 	sjmp	00145$
+      000123                        516 00133$:
+                                    517 ;	cooperative.c:179: else if (bitmap_ID & 0b0010) cur_ID = 1;
+      000123 E5 35            [12]  518 	mov	a,_bitmap_ID
+      000125 30 E1 05         [24]  519 	jnb	acc.1,00130$
+      000128 75 34 01         [24]  520 	mov	_cur_ID,#0x01
+      00012B 80 08            [24]  521 	sjmp	00145$
+      00012D                        522 00130$:
+                                    523 ;	cooperative.c:180: else if (bitmap_ID & 0b0100) cur_ID = 2;
+      00012D E5 35            [12]  524 	mov	a,_bitmap_ID
+      00012F 30 E2 03         [24]  525 	jnb	acc.2,00145$
+      000132 75 34 02         [24]  526 	mov	_cur_ID,#0x02
+      000135                        527 00145$:
+                                    528 ;	cooperative.c:182: RESTORESTATE; 
+      000135 E5 34            [12]  529 	mov	a,_cur_ID
+      000137 24 30            [12]  530 	add	a,#_saved_SP
+      000139 F9               [12]  531 	mov	r1,a
+      00013A 87 81            [24]  532 	mov	_SP,@r1
+      00013C D0 D0            [24]  533 	POP PSW 
+      00013E D0 83            [24]  534 	POP DPH 
+      000140 D0 82            [24]  535 	POP DPL 
+      000142 D0 F0            [24]  536 	POP B 
+      000144 D0 E0            [24]  537 	POP ACC 
+                                    538 ;	cooperative.c:183: }
+      000146 22               [24]  539 	ret
+                                    540 ;------------------------------------------------------------
+                                    541 ;Allocation info for local variables in function 'ThreadExit'
+                                    542 ;------------------------------------------------------------
+                                    543 ;	cooperative.c:192: void ThreadExit(void) {
+                                    544 ;	-----------------------------------------
+                                    545 ;	 function ThreadExit
+                                    546 ;	-----------------------------------------
+      000147                        547 _ThreadExit:
+                                    548 ;	cooperative.c:193: bitmap_ID &= ~(1 << cur_ID); // clear current thread
+      000147 AF 34            [24]  549 	mov	r7,_cur_ID
+      000149 8F F0            [24]  550 	mov	b,r7
+      00014B 05 F0            [12]  551 	inc	b
+      00014D 74 01            [12]  552 	mov	a,#0x01
+      00014F 80 02            [24]  553 	sjmp	00218$
+      000151                        554 00216$:
+      000151 25 E0            [12]  555 	add	a,acc
+      000153                        556 00218$:
+      000153 D5 F0 FB         [24]  557 	djnz	b,00216$
+      000156 F4               [12]  558 	cpl	a
+      000157 FF               [12]  559 	mov	r7,a
+      000158 AE 35            [24]  560 	mov	r6,_bitmap_ID
+      00015A 5E               [12]  561 	anl	a,r6
+      00015B F5 35            [12]  562 	mov	_bitmap_ID,a
+                                    563 ;	cooperative.c:194: if (!bitmap_ID) return;
+      00015D E5 35            [12]  564 	mov	a,_bitmap_ID
+      00015F 70 01            [24]  565 	jnz	00102$
+      000161 22               [24]  566 	ret
+      000162                        567 00102$:
+                                    568 ;	cooperative.c:195: if (cur_ID == 0) {
+      000162 E5 34            [12]  569 	mov	a,_cur_ID
+      000164 70 1F            [24]  570 	jnz	00144$
+                                    571 ;	cooperative.c:196: if (bitmap_ID & 0b0010) cur_ID = 1;
+      000166 E5 35            [12]  572 	mov	a,_bitmap_ID
+      000168 30 E1 06         [24]  573 	jnb	acc.1,00109$
+      00016B 75 34 01         [24]  574 	mov	_cur_ID,#0x01
+      00016E 02r01rEC         [24]  575 	ljmp	00145$
+      000171                        576 00109$:
+                                    577 ;	cooperative.c:197: else if (bitmap_ID & 0b0100) cur_ID = 2;
+      000171 E5 35            [12]  578 	mov	a,_bitmap_ID
+      000173 30 E2 05         [24]  579 	jnb	acc.2,00106$
+      000176 75 34 02         [24]  580 	mov	_cur_ID,#0x02
+      000179 80 71            [24]  581 	sjmp	00145$
+      00017B                        582 00106$:
+                                    583 ;	cooperative.c:198: else if (bitmap_ID & 0b1000) cur_ID = 3;
+      00017B E5 35            [12]  584 	mov	a,_bitmap_ID
+      00017D 30 E3 6C         [24]  585 	jnb	acc.3,00145$
+      000180 75 34 03         [24]  586 	mov	_cur_ID,#0x03
+      000183 80 67            [24]  587 	sjmp	00145$
+      000185                        588 00144$:
+                                    589 ;	cooperative.c:199: } else if (cur_ID == 1) {
+      000185 74 01            [12]  590 	mov	a,#0x01
+      000187 B5 34 1E         [24]  591 	cjne	a,_cur_ID,00141$
+                                    592 ;	cooperative.c:200: if (bitmap_ID & 0b0100) cur_ID = 2;
+      00018A E5 35            [12]  593 	mov	a,_bitmap_ID
+      00018C 30 E2 05         [24]  594 	jnb	acc.2,00117$
+      00018F 75 34 02         [24]  595 	mov	_cur_ID,#0x02
+      000192 80 58            [24]  596 	sjmp	00145$
+      000194                        597 00117$:
+                                    598 ;	cooperative.c:201: else if (bitmap_ID & 0b1000) cur_ID = 3;
+      000194 E5 35            [12]  599 	mov	a,_bitmap_ID
+      000196 30 E3 05         [24]  600 	jnb	acc.3,00114$
+      000199 75 34 03         [24]  601 	mov	_cur_ID,#0x03
+      00019C 80 4E            [24]  602 	sjmp	00145$
+      00019E                        603 00114$:
+                                    604 ;	cooperative.c:202: else if (bitmap_ID & 0b0001) cur_ID = 0;
+      00019E E5 35            [12]  605 	mov	a,_bitmap_ID
+      0001A0 30 E0 49         [24]  606 	jnb	acc.0,00145$
+      0001A3 75 34 00         [24]  607 	mov	_cur_ID,#0x00
+      0001A6 80 44            [24]  608 	sjmp	00145$
+      0001A8                        609 00141$:
+                                    610 ;	cooperative.c:203: } else if (cur_ID == 2) {
+      0001A8 74 02            [12]  611 	mov	a,#0x02
+      0001AA B5 34 1E         [24]  612 	cjne	a,_cur_ID,00138$
+                                    613 ;	cooperative.c:204: if (bitmap_ID & 0b1000) cur_ID = 3;
+      0001AD E5 35            [12]  614 	mov	a,_bitmap_ID
+      0001AF 30 E3 05         [24]  615 	jnb	acc.3,00125$
+      0001B2 75 34 03         [24]  616 	mov	_cur_ID,#0x03
+      0001B5 80 35            [24]  617 	sjmp	00145$
+      0001B7                        618 00125$:
+                                    619 ;	cooperative.c:205: else if (bitmap_ID & 0b0001) cur_ID = 0;
+      0001B7 E5 35            [12]  620 	mov	a,_bitmap_ID
+      0001B9 30 E0 05         [24]  621 	jnb	acc.0,00122$
+      0001BC 75 34 00         [24]  622 	mov	_cur_ID,#0x00
+      0001BF 80 2B            [24]  623 	sjmp	00145$
+      0001C1                        624 00122$:
+                                    625 ;	cooperative.c:206: else if (bitmap_ID & 0b0010) cur_ID = 1;
+      0001C1 E5 35            [12]  626 	mov	a,_bitmap_ID
+      0001C3 30 E1 26         [24]  627 	jnb	acc.1,00145$
+      0001C6 75 34 01         [24]  628 	mov	_cur_ID,#0x01
+      0001C9 80 21            [24]  629 	sjmp	00145$
+      0001CB                        630 00138$:
+                                    631 ;	cooperative.c:207: } else if (cur_ID == 3) {
+      0001CB 74 03            [12]  632 	mov	a,#0x03
+      0001CD B5 34 1C         [24]  633 	cjne	a,_cur_ID,00145$
+                                    634 ;	cooperative.c:208: if (bitmap_ID & 0b0001) cur_ID = 0;
+      0001D0 E5 35            [12]  635 	mov	a,_bitmap_ID
+      0001D2 30 E0 05         [24]  636 	jnb	acc.0,00133$
+      0001D5 75 34 00         [24]  637 	mov	_cur_ID,#0x00
+      0001D8 80 12            [24]  638 	sjmp	00145$
+      0001DA                        639 00133$:
+                                    640 ;	cooperative.c:209: else if (bitmap_ID & 0b0010) cur_ID = 1;
+      0001DA E5 35            [12]  641 	mov	a,_bitmap_ID
+      0001DC 30 E1 05         [24]  642 	jnb	acc.1,00130$
+      0001DF 75 34 01         [24]  643 	mov	_cur_ID,#0x01
+      0001E2 80 08            [24]  644 	sjmp	00145$
+      0001E4                        645 00130$:
+                                    646 ;	cooperative.c:210: else if (bitmap_ID & 0b0100) cur_ID = 2;
+      0001E4 E5 35            [12]  647 	mov	a,_bitmap_ID
+      0001E6 30 E2 03         [24]  648 	jnb	acc.2,00145$
+      0001E9 75 34 02         [24]  649 	mov	_cur_ID,#0x02
+      0001EC                        650 00145$:
+                                    651 ;	cooperative.c:212: RESTORESTATE;
+      0001EC E5 34            [12]  652 	mov	a,_cur_ID
+      0001EE 24 30            [12]  653 	add	a,#_saved_SP
+      0001F0 F9               [12]  654 	mov	r1,a
+      0001F1 87 81            [24]  655 	mov	_SP,@r1
+      0001F3 D0 D0            [24]  656 	POP PSW 
+      0001F5 D0 83            [24]  657 	POP DPH 
+      0001F7 D0 82            [24]  658 	POP DPL 
+      0001F9 D0 F0            [24]  659 	POP B 
+      0001FB D0 E0            [24]  660 	POP ACC 
+                                    661 ;	cooperative.c:213: }
+      0001FD 22               [24]  662 	ret
+                                    663 	.area CSEG    (CODE)
+                                    664 	.area CONST   (CODE)
+                                    665 	.area XINIT   (CODE)
+                                    666 	.area CABS    (ABS,CODE)

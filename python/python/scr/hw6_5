@@ -1,0 +1,23 @@
+T = int(input())
+for i in range(T):
+  num = input().split()
+  l = complex(num[0])
+  r = complex(num[1])
+  print(f'Case #{i+1}: ', end="")
+  if l.real < r.real and l.imag < r.imag:
+    print(f'{l} < {r}')
+  elif l.real < r.real and l.imag == r.imag:
+    print(f'{l} <= {r}')
+  elif l.real == r.real and l.imag < r.imag:
+    print(f'{l} <= {r}')
+  elif l.real == r.real and l.imag == r.imag:
+    print(f'{l} == {r}')
+  elif l.real > r.real and l.imag > r.imag:
+    print(f'{l} > {r}')
+  elif l.real > r.real and l.imag == r.imag:
+    print(f'{l} >= {r}')
+  elif l.real == r.real and l.imag > r.imag:
+    print(f'{l} >= {r}') 
+  else :
+    print(f'{l} != {r}')
+

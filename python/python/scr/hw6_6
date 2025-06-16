@@ -1,0 +1,57 @@
+T = int(input())
+dic = {1:'I', 5:'V', 10:'X', 50:'L', 100:'C', 500:'D', 1000:'M'}
+for i in range(T):
+  ans = ""
+  n = int(input())
+  while n >= 1000:
+    ans += dic[1000]
+    n -= 1000
+  while n >= 500:
+    if n >= 900:
+      ans += dic[100]
+      ans += dic[1000]
+      n -= 900 
+      break
+    ans += dic[500]
+    n-=500
+  while n >= 100:
+    if n >= 400:
+      ans += dic[100]
+      ans += dic[500]
+      n -= 400
+      break
+    ans += dic[100]
+    n-=100
+  while n >= 50:
+    if n >= 90:
+      ans += dic[10]
+      ans += dic[100]
+      n -= 90 
+      break
+    ans += dic[50]
+    n-=50
+  while n >= 10:
+    if n >= 40:
+      ans += dic[10]
+      ans += dic[50]
+      n -= 40
+      break
+    ans += dic[10]
+    n-=10
+  while n >= 5:
+    if n >= 9:
+      ans += dic[1]
+      ans += dic[10]
+      n -= 9
+      break
+    ans += dic[5]
+    n-=5
+  while n >= 1:
+    if n >= 4:
+      ans += dic[1]
+      ans += dic[5]
+      n -= 4
+      break
+    ans += dic[1]
+    n-=1
+  print(f'Case #{i+1}: {ans}')

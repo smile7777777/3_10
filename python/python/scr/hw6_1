@@ -1,0 +1,11 @@
+T = int(input())
+for i in range(T):
+  n = int(input())
+  li = []
+  print(f'Case #{i+1}: ', end="")
+  while n :
+    li.append(chr((n-1)%26 + 65))
+    #print(chr(n%26 + 65))
+    n = (n-1) // 26
+  li.reverse()
+  print(f'{"".join(li)}')

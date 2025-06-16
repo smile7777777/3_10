@@ -1,0 +1,8 @@
+x = input()
+y = input()
+store = ""
+
+for i in range(int(y)):
+    store += x
+
+print(store)

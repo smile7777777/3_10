@@ -1,0 +1,8 @@
+T = int(input())
+for i in range(T) :
+  str = input()
+  ans = 0
+  for j in range(len(str)):
+    num = ord(str[j]) - 64
+    ans = ans*26 + num
+  print(f'Case #{i+1}: {ans}')
